@@ -735,6 +735,12 @@ class GroupsTest extends TestCase
                     'read_registry',
                 ],
             ],
+
+    public function shouldGetGroupMergeRequests(): void
+    {
+        $expectedArray = [
+            ['id' => 1, 'title' => 'A merge request'],
+            ['id' => 2, 'title' => 'Another merge request'],
         ];
 
         $api = $this->getApiMock();
@@ -863,5 +869,10 @@ class GroupsTest extends TestCase
             ->will($this->returnValue($expectedBool));
 
         $this->assertEquals($expectedBool, $api->deleteDeployToken(1, 2));
+            ->with('groups/1/merge_requests')
+            ->will($this->returnValue($expectedArray))
+        ;
+
+        $this->assertEquals($expectedArray, $api->mergeRequests(1, []));
     }
 }
